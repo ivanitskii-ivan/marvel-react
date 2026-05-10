@@ -1,70 +1,67 @@
-# Getting Started with Create React App
+# 🦸 Marvel Information Portal
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Веб-приложение для просмотра каталога героев Marvel и комиксов. 
+Получает данные через Comic Vine API, с возможностью поиска и просмотра деталей героев.
 
-## Available Scripts
+## 🔗 Демо
 
-In the project directory, you can run:
+🚧 Скоро будет доступно по ссылке (в процессе деплоя)
 
-### `yarn start`
+## 🛠 Стек
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- **React 17** (классовые компоненты)
+- **React Router 5** (SPA-навигация)
+- **SCSS** (стили с переменными)
+- **Comic Vine API** (источник данных)
+- **PropTypes** (типизация пропов)
+- **AbortController** (отмена запросов при размонтировании)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## ✨ Что реализовано
 
-### `yarn test`
+- 🦸 Каталог героев с пагинацией (Prev/Next)
+- 🎲 Random Character — случайный герой при загрузке
+- 📖 Детальная карточка героя со списком его комиксов
+- 📚 Раздел комиксов с обложками и ценами
+- ⏳ Skeleton-состояния пока загружаются данные
+- ❌ Error Boundary для каждого критического блока
+- 🐱 Кастомная страница ошибки "Capitan 404"
+- 📱 Адаптивная вёрстка
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🏗 Архитектура
 
-### `yarn build`
+- `ApiService` — отдельный класс для работы с API
+- `Promise.all` для параллельных запросов (герой + его комиксы)
+- `AbortController` для отмены устаревших запросов
+- `ErrorBoundary` обёрнут вокруг каждого критического компонента
+- Чёткое разделение состояний: `skeleton / loading / error / success`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🚀 Локальный запуск
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+\`\`\`bash
+# 1. Клонировать
+git clone https://github.com/ivanitskii-ivan/marvel-react.git
+cd marvel-react
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# 2. Установить зависимости
+npm install
 
-### `yarn eject`
+# 3. Создать файл .env в корне:
+REACT_APP_API_KEY=ваш_ключ_от_comicvine.gamespot.com
+REACT_APP_API_URL=https://comicvine.gamespot.com
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+# 4. Запустить
+npm start
+\`\`\`
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 📚 Чему научился на этом проекте
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- Работа с REST API и трансформация ответов
+- Жизненный цикл React-компонентов (componentDidMount, componentDidUpdate, componentWillUnmount)
+- Управление состоянием в классовых компонентах
+- Маршрутизация SPA через React Router
+- Обработка ошибок через ErrorBoundary
+- Отмена запросов через AbortController (избегаем race conditions)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+---
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+📧 Связаться: ivanitskii.ivan06@yandex.com
