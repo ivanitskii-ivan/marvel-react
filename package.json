@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "lockfileVersion": 1,
   "engines": {
-    "node": "16.18.1"
+    "node": "20.x"
   },
   "requires": true,
   "dependencies": {
