@@ -22,7 +22,6 @@ export default class ApiService {
 
   getAllCharacters(offset, signal) {
     const url = `${this.apiBase}/api/characters/?api_key=${this.apiKey}&limit=6&offset=${offset}&format=json`;
-    console.log(url)
     return this.getResource(url, { signal });
   }
 
