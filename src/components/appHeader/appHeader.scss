@@ -4,10 +4,25 @@
     &__header {
         display: flex;
         justify-content: space-between;
+        align-items: center;
+        z-index: 1000;
+        position: relative;
+        background: #fff;
+        padding-inline: 20px;
+        border-radius: 15px;
+        box-shadow: 5px 5px 5px #111111c2;
+    }
+    &__logo{
+        height: 100px;
+        width: 180px;
+        img{
+            width: 100%;
+            scale: 1.7;
+        }
     }
     &__title {
         font-weight: bold;
-        font-size: 28px;
+        font-size: clamp(15px, calc(20px + 0.4vw),28px);
         line-height: 37px;
         span {
             color: $main-color;

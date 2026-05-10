@@ -1,159 +1,181 @@
+// CharList.js
 import "./charList.scss";
 import { Component } from "react";
-import MarvelService from "../../service/marvelService";
+import PropTypes from "prop-types";
+
+import ApiService from "../../service/apiService";
 import Spinner from "../spinner/spinner";
 import Error from "../error/error";
 
 class CharList extends Component {
+  static propTypes = {
+    selectedCharId: PropTypes.number,
+    onCharSelected: PropTypes.func.isRequired,
+    onClearCharId: PropTypes.func.isRequired,
+  };
+
   state = {
     characters: [],
-    error: false,
     loading: true,
-    active: false,
-    charOffset: 280,
-    loadingOffset: false,
-    charLength: null,
+    error: false,
+    offset: 0,
   };
 
-  marvelService = new MarvelService();
-
-  getItem = (offset, characters) => {
-    const oldData = characters ? characters : "";
-    this.onLoadedChar();
-    this.marvelService
-      .getAllcharacters(process.env.REACT_APP_API_URL, offset)
-      .then((res) => {
-        const data = res.data.results;
-        this.setState({
-          characters: [...oldData, ...data],
-          loading: false,
-          error: false,
-          loadingOffset: false,
-          charLength: data.length,
-        });
-        this.buttonDisabled(this.state.charLength);
-      })
-      .catch((err) => {
-        this.setState({ error: true, loading: false });
-      });
-  };
+  apiService = new ApiService();
+  controller = null;
 
   componentDidMount() {
-    this.onLoadingChar();
-    this.getItem(this.state.charOffset);
+    this.loadCharacters(this.state.offset);
   }
 
-  buttonDisabled = (charLength) => {
-    if (charLength < 9) {
-      this.setState({ loadingOffset: true });
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.offset !== this.state.offset) {
+      this.loadCharacters(this.state.offset);
+    }
+
+    // если выбор персонажа сбросили из App — сбросим active карточки
+    if (prevProps.selectedCharId && !this.props.selectedCharId) {
+      this.clearActive();
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.controller) this.controller.abort();
+  }
+
+  loadCharacters = async (offset) => {
+    if (this.controller) this.controller.abort();
+    this.controller = new AbortController();
+
+    this.setState({ loading: true, error: false });
+
+    try {
+      const res = await this.apiService.getAllCharacters(offset, this.controller.signal);
+
+      if (this.controller.signal.aborted) return;
+
+      const characters = await this.attachImageSizes(res?.results || []);
+
+      // выставим active если уже выбран
+      const selectedId = this.props.selectedCharId;
+      const normalized = characters.map((c) => ({
+        ...c,
+        active: selectedId ? c.id === selectedId : false,
+      }));
+
+      this.setState({
+        characters: normalized,
+        loading: false,
+        error: false,
+      });
+    } catch (e) {
+      if (e?.name === "AbortError") return;
+      this.setState({ loading: false, error: true });
     }
   };
 
-  onLoadingChar = () => {
-    this.setState({ loadingOffset: true });
+  attachImageSizes = (characters) => {
+    const list = Array.isArray(characters) ? characters.filter(Boolean) : [];
+
+    const promises = list.map((item) => {
+      const imgUrl = item?.image?.medium_url;
+
+      if (!imgUrl) return Promise.resolve({ ...item, heightSize: 0 });
+
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve({ ...item, heightSize: img.naturalHeight || 0 });
+        img.onerror = () => resolve({ ...item, heightSize: 0 });
+        img.src = imgUrl;
+      });
+    });
+
+    return Promise.all(promises);
   };
 
-  onLoadedChar = () => {
-    this.onLoadingChar();
-    this.setState(({ charOffset }) => ({
-      charOffset: charOffset + 9,
+  setActive = (id) => {
+    this.setState(
+      ({ characters }) => ({
+        characters: characters.map((item) => ({
+          ...item,
+          active: item.id === id,
+        })),
+      }),
+      () => this.props.onCharSelected(id)
+    );
+  };
+
+  clearActive = () => {
+    this.setState(({ characters }) => ({
+      characters: characters.map((item) => ({ ...item, active: false })),
     }));
   };
 
-  selectedItemCharActive = (id) => {
-    const { characters } = this.state;
-    this.clearSelectedCharActive();
-    this.setState({
-      characters: characters.map((item) => {
-        if (item.id === id) item.active = true;
-        return item;
-      }),
-    });
+  onCardClick = (item) => {
+    if (item.active) {
+      this.clearActive();
+      this.props.onClearCharId();
+      return;
+    }
+    this.setActive(item.id);
   };
 
-  clearSelectedCharActive = () => {
-    const { characters } = this.state;
-    this.setState({
-      characters: characters.map((item) => {
-        if (item.active) item.active = false;
-        return item;
-      }),
-    });
+  next = () => {
+    this.setState(({ offset }) => ({ offset: Math.min(offset + 6, 100) }));
+  };
+
+  prev = () => {
+    this.setState(({ offset }) => ({ offset: Math.max(offset - 6, 0) }));
   };
 
   render() {
-    const { characters, loading, error, charOffset, loadingOffset } =
-      this.state;
-    let styleBtn = "button button__main button__long";
-    if (loadingOffset) {
-      styleBtn += " button__disabled";
-    }
+    const { characters, loading, error } = this.state;
+
     const spinner = loading ? <Spinner /> : null;
-    const errorChar = error ? <Error /> : null;
-    const thumbnail = (
-      <Thumbnail
-        characters={characters}
-        prop={this.props}
-        onActivChar={this.selectedItemCharActive}
-      />
-    );
+    const errorView = error ? <Error /> : null;
 
     return (
-      <div className="char__list">
-        {errorChar}
-        <ul className="char__grid">
-          {spinner}
-          {thumbnail}
-        </ul>
-        <button
-          className={styleBtn}
-          onClick={() => this.getItem(charOffset, characters)}
-        >
-          <div className="inner">load more</div>
-        </button>
+      <div>
+        <div className="char__list">
+          {errorView}
+
+          <ul className={loading ? "char__grid-center hero-loader__center" : "char__grid"}>
+            {spinner}
+            {!loading &&
+              !error &&
+              characters.map((item) => {
+                const imgUrl = item?.image?.medium_url;
+                const objectTop = item.heightSize > 300;
+
+                return (
+                  <li
+                    className={`${item.active ? "active-charCard" : ""} char__item`}
+                    key={item.id}
+                    onClick={() => this.onCardClick(item)}
+                  >
+                    <img
+                      className={objectTop ? "object-top" : ""}
+                      src={imgUrl}
+                      alt={item.name}
+                    />
+                    <div className="char__name">{item.name}</div>
+                  </li>
+                );
+              })}
+          </ul>
+        </div>
+
+        <div className="hero-navigation">
+          <button className="button button__main button__long" onClick={this.prev} disabled={loading}>
+            <div className="inner">Prev hero</div>
+          </button>
+          <button className="button button__main button__long" onClick={this.next} disabled={loading}>
+            <div className="inner">Next hero</div>
+          </button>
+        </div>
       </div>
     );
   }
 }
-
-const Thumbnail = (props) => {
-  const { characters, prop, onActivChar } = props;
-  return characters.map((item) => {
-    let charClass = "char__item";
-    let imgStyle = { objectFit: "cover" };
-    if (
-      item.thumbnail.path + ".jpg" ===
-      "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg"
-    ) {
-      imgStyle = { objectFit: "unset" };
-    }
-    if (item.active) {
-      charClass += " char__item_selected";
-    }
-    if (!item) {
-      return (
-        <li className="char__item" key={item.id}>
-          <span>Sorry can not find characters!</span>
-        </li>
-      );
-    } else {
-      const img = `${item.thumbnail.path}.jpg`;
-      const name = `${item.name}`;
-      return (
-        <li
-          className={charClass}
-          key={item.id}
-          onClick={() => {
-            prop.onCharSelected(item.id);
-            onActivChar(item.id);
-          }}
-        >
-          <img src={img} alt={name} style={imgStyle} />
-          <div className="char__name">{name}</div>
-        </li>
-      );
-    }
-  });
-};
 
 export default CharList;

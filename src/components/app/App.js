@@ -1,52 +1,74 @@
+// App.js
+import { Component } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
 import AppHeader from "../appHeader/AppHeader";
 import RandomChar from "../randomChar/RandomChar";
 import CharList from "../charList/CharList";
 import CharInfo from "../charInfo/CharInfo";
-import decoration from "../../resources/img/vision.png";
-import ErrorBoundery from "../error/ErrorBoundary ";
-import PropTypes from "prop-types";
-import { Component } from "react";
+import ErrorBoundary from "../error/ErrorBoundary";
+import AppBanner from "../appBanner/AppBanner";
+import ComicsList from "../comicsList/ComicsList";
 
 class App extends Component {
   state = {
-    id: null,
+    selectedCharId: null, // number | null
   };
 
   onCharSelected = (id) => {
-    this.setState({ id: id });
+    this.setState({ selectedCharId: id });
   };
 
   onClearCharId = () => {
-    this.setState({ id: null });
+    this.setState({ selectedCharId: null });
   };
 
   render() {
+    const { selectedCharId } = this.state;
+
     return (
-      <div className="app">
-        <div className="app__wrapper">
-          <AppHeader />
-          <main>
-            <ErrorBoundery>
-              <RandomChar />
-            </ErrorBoundery>
-            <div className="char__content">
-              <ErrorBoundery>
-                <CharList onCharSelected={this.onCharSelected} />
-              </ErrorBoundery>
-              <ErrorBoundery>
-                <CharInfo
-                  id={this.state.id}
-                  onClearCharId={this.onClearCharId}
-                />
-              </ErrorBoundery>
-            </div>
-            <img className="bg-decoration" src={decoration} alt="vision" />
-          </main>
+      <Router>
+        <div className="app">
+          <div className="app__wrapper">
+            <AppHeader />
+            <main>
+              <Switch>
+                <Route exact path="/">
+                  <ErrorBoundary>
+                    <RandomChar />
+                  </ErrorBoundary>
+
+                  <div className="char__content">
+                    <ErrorBoundary>
+                      <CharList
+                        selectedCharId={selectedCharId}
+                        onCharSelected={this.onCharSelected}
+                        onClearCharId={this.onClearCharId}
+                      />
+                    </ErrorBoundary>
+
+                    <ErrorBoundary>
+                      <CharInfo
+                        charId={selectedCharId}
+                        onClearCharId={this.onClearCharId}
+                      />
+                    </ErrorBoundary>
+                  </div>
+                </Route>
+
+                <Route exact path="/comics">
+                  <AppBanner />
+                  <ErrorBoundary>
+                    <ComicsList />
+                  </ErrorBoundary>
+                </Route>
+              </Switch>
+            </main>
+          </div>
         </div>
-      </div>
+      </Router>
     );
   }
 }
 
-CharInfo.propTypes = { id: PropTypes.number };
 export default App;

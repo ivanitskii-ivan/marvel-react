@@ -10,17 +10,19 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "gh-pages": "^5.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3",
+    "react-router-dom": "^5.3.4",
+    "react-scripts": "^5.0.1",
     "web-vitals": "^1.0.1"
   },
-  
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -43,5 +45,6 @@
   "devDependencies": {
     "prop-types": "^15.8.1",
     "sass": "^1.38.0"
-  }
+  },
+  "proxy": "https://comicvine.gamespot.com"
 }

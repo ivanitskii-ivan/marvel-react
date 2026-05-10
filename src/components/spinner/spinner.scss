@@ -1,56 +1,55 @@
 
-  .spinner{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
 
-  svg circle{
-    stroke: #4DD0E1;
+.hero-loader {
+  display: grid;
+  place-items: center;
+  gap: 12px;
+  background: #fff;
+  border-radius:20px 0 0 20px ;
+}
+
+.hero-loader__orbit {
+  top: 15%;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  position: relative;
+  animation: rotate 1.2s linear infinite;
+}
+
+.hero-loader__weapon {
+  position: absolute;
+  top: -10%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 32px;
+  width: 50px;
+  height: 50px;
+  img{
+    width: 100%;
   }
-  
-  .circle{
-    transform-origin: center ;
+}
+
+.hero-loader__hero {
+  width: 120px;
+  height: 120px;
+  img{
+    width: 100%;
   }
-  #arc1{
-    stroke-dasharray: 30;
-    stroke-dashoffset: 18;
-    animation: 10s -2s rota infinite linear;
+}
+
+.hero-loader__center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 651px;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
   }
-  #arc3{
-    stroke-dasharray: 400;
-    stroke-dashoffset: 400;
-    animation: 16s 1s rota infinite linear;
+  to {
+    transform: rotate(360deg);
   }
-  #arc4{
-    stroke-dasharray: 400;
-    stroke-dashoffset: 400;
-    animation: 6s 1s rota infinite linear reverse;
-  }
-  #arc5{
-    stroke-dasharray: 400;
-    stroke-dashoffset: 400;
-    animation: 4s 1s rota infinite linear;
-  }
-  #arc6{
-    stroke-dasharray: 400;
-    stroke-dashoffset: 400;
-    animation: 8s 1s rota infinite linear alternate;
-  }
-  #arc7{
-    stroke-dasharray: 400;
-    stroke-dashoffset: 400;
-    animation: 4s 1s rota infinite linear reverse;
-  }
-  text{
-   fill: #ffffff;
-   font: bold 24px sans-serif;
-  }
-  @keyframes rota{
-    from{
-      transform: rotate(0deg);
-    }
-    to{
-      transform: rotate(360deg);
-    }
-  }
+}

@@ -1,7 +1,7 @@
-async function getAllcharacters(url, apiKey) {
-  const responce = await fetch(`${url}`);
-  const data = await responce.json();
-  return data;
-}
+// async function getAllcharacters(url, apiKey) {
+//   const responce = await fetch(`${url}`);
+//   const data = await responce.json();
+//   return data;
+// }
 
-export default getAllcharacters;
+// export default getAllcharacters;
