@@ -7,7 +7,6 @@ class ErrorBoundery extends Component {
   };
 
   componentDidCatch(error, errorMessages) {
-    console.log(error, errorMessages);
     this.setState({ error: true });
   }
 
