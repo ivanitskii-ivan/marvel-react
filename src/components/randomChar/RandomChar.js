@@ -72,7 +72,7 @@ class RandomChar extends Component {
     const { char, loading, error, imageSize } = this.state;
 
     return (
-      <div className="randomchar">
+      <div className="randomchar ">
         {loading && <Spinner />}
         {!loading && !error && char && <ViewChar char={char} imgSize={imageSize} />}
         {!loading && error && <Capitan404 />}
@@ -103,7 +103,7 @@ const ViewChar = ({ char, imgSize }) => {
   const text = trimmed.length > 200 ? trimmed.slice(0, 200) + "..." : trimmed;
 
   return (
-    <div className="randomchar__block">
+    <div className="randomchar__block ">
       <img
         src={image}
         alt={name}

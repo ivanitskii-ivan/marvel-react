@@ -12,7 +12,8 @@
   cursor: pointer;
   &__long {
     display: block;
-    width: 170px;
+    max-width: 170px;
+    width: 100%;
     &::before {
       content: "";
       display: block;

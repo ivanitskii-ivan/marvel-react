@@ -7,6 +7,11 @@
   background: #fff;
   border-radius:20px 0 0 20px ;
 }
+@media (max-width:992px){
+  .hero-loader{
+    border-radius: 20px;
+  }
+}
 
 .hero-loader__orbit {
   top: 15%;

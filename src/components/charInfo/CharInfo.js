@@ -27,6 +27,14 @@ class CharInfo extends Component {
     if (this.props.charId !== prevProps.charId) {
       this.loadCharacter(this.props.charId);
     }
+
+  const isOpenModal = this.props.charId 
+    if(isOpenModal){
+      document.body.style.overflow = 'hidden'
+    }
+    else{
+      document.body.style.overflow =  ''
+    }
   }
 
   componentWillUnmount() {
@@ -46,7 +54,10 @@ class CharInfo extends Component {
     this.setState({ loading: true, error: false });
 
     try {
-      const char = await this.apiService.getCharacter(id, this.controller.signal);
+      const char = await this.apiService.getCharacter(
+        id,
+        this.controller.signal,
+      );
 
       // Если запрос был отменён — не трогаем state
       if (this.controller.signal.aborted) return;
@@ -68,27 +79,27 @@ class CharInfo extends Component {
 
   render() {
     const { loading, char, error } = this.state;
-
+    const isActive = char ? true : false
     const skeleton = !loading && !error && !char ? <Skeleton /> : null;
     const errorMessage = error ? <Error /> : null;
     const spinner = loading ? <Spinner /> : null;
     const view = !loading && !error && char ? <View char={char} /> : null;
-
     // Если персонаж не выбран — можно скрыть крестик
     const showClose = !!this.props.charId;
-
     return (
-      <div className="char__info">
-        {showClose && (
-          <span className="close__modal" onClick={this.closeModal}>
-            &#10006;
-          </span>
-        )}
+      <div className={isActive || loading?"char__overlay active-modal":"char__overlay"} onClick={this.closeModal} >
+        <div className="char__info " onClick={(e)=>e.stopPropagation()}>
+          {showClose && !loading && (
+            <span className="close__modal" onClick={this.closeModal}>
+              &#10006;
+            </span>
+          )}
 
-        {skeleton}
-        {errorMessage}
-        {spinner}
-        {view}
+          {skeleton}
+          {errorMessage}
+          {spinner}
+          {view}
+        </div>
       </div>
     );
   }
@@ -104,10 +115,20 @@ const View = ({ char }) => {
         <div>
           <div className="char__info-name">{name}</div>
           <div className="char__btns">
-            <a href={home} className="button button__main" target="_blank" rel="noreferrer">
+            <a
+              href={home}
+              className="button button__main"
+              target="_blank"
+              rel="noreferrer"
+            >
               <div className="inner">homepage</div>
             </a>
-            <a href={wiki} className="button button__secondary" target="_blank" rel="noreferrer">
+            <a
+              href={wiki}
+              className="button button__secondary"
+              target="_blank"
+              rel="noreferrer"
+            >
               <div className="inner">Wiki</div>
             </a>
           </div>

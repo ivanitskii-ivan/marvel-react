@@ -1,6 +1,9 @@
 @import '../../style/variables.scss';
 
 .app {
+    &__opacity{
+        
+    }
     &__banner {
         width: 100%;
         background-color: $red-dark;
@@ -11,11 +14,22 @@
         grid-template-columns: 152px auto 133px;
         &-text {
             font-weight: bold;
-            font-size: 24px;
+            font-size: clamp(16px, 2.5vw, 24px);
             line-height: 32px;
             color: #FFFFFF;
             padding-left: 83px;
             padding-top: 18px;
+        }
+    }
+}
+
+@media (max-width:576px){
+    .app{
+        &__banner{
+            grid-template-columns: repeat(2, 1fr); 
+            .title-logo{
+                display: none;
+            }
         }
     }
 }

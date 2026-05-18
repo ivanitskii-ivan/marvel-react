@@ -41,9 +41,8 @@ class ComicsList extends Component {
     this.setState({ loading: true, error: false });
 
     try {
-      // Если это "фейковая" задержка — лучше убрать в проде
+      // "фейковая" задержка — лучше убрать в проде
       // await this.delay(400);
-
       const res = await this.apiService.getAllComics(limit, offset, this.controller.signal);
 
       if (this.controller.signal.aborted) return;
@@ -91,7 +90,7 @@ class ComicsList extends Component {
 
 const ComicsGrid = ({ comics }) => {
   return (
-    <ul className="comics__grid">
+    <ul className="comics__grid ">
       {comics.map((item) => (
         <li className="comics__item" key={item.id}>
           <a className="comics__link" href={item.site_detail_url} target="_blank" rel="noreferrer">

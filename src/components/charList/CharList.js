@@ -136,7 +136,7 @@ class CharList extends Component {
 
     return (
       <div>
-        <div className="char__list">
+        <div className="char__list ">
           {errorView}
 
           <ul className={loading ? "char__grid-center hero-loader__center" : "char__grid"}>

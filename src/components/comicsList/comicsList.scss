@@ -8,8 +8,9 @@
   &__grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, 225px);
-    justify-content: space-between;
+    justify-content: center;
     row-gap: 55px;
+    gap: 2rem;
   }
   &__link {
         display: block;
@@ -67,4 +68,9 @@
     display: flex;
     justify-content: center;
     gap: 10rem;
+}
+@media (max-width:576px){
+  .buttons__wrapper{
+    gap: 5rem;
+  }
 }
