@@ -5,7 +5,7 @@
 
 ## 🔗 Демо
 
- доступно по ссылке Marvel comics catalog with character search, built with React and Comic Vine API
+ доступно по ссылке (https://marvel-react-4reohp1t4-ivanickii-s-projects.vercel.app/)
 
 ## 🛠 Стек
 
