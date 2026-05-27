@@ -73,7 +73,11 @@ class CharInfo extends Component {
     }
   };
 
-  closeModal = () => {
+  closeModal = (e) => {
+    const {loading} = this.state
+    if(loading){
+      return
+    }
     this.props.onClearCharId();
   };
 
@@ -87,7 +91,7 @@ class CharInfo extends Component {
     // Если персонаж не выбран — можно скрыть крестик
     const showClose = !!this.props.charId;
     return (
-      <div className={isActive || loading?"char__overlay active-modal":"char__overlay"} onClick={this.closeModal} >
+      <div className={isActive || loading ?"char__overlay active-modal":"char__overlay"} onClick={this.closeModal} >
         <div className="char__info " onClick={(e)=>e.stopPropagation()}>
           {showClose && !loading && (
             <span className="close__modal" onClick={this.closeModal}>
