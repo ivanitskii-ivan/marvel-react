@@ -5,7 +5,7 @@
 
 ## 🔗 Демо
 
-🚧 Скоро будет доступно по ссылке (в процессе деплоя)
+ доступно по ссылке (https://marvel-react-4reohp1t4-ivanickii-s-projects.vercel.app/)
 
 ## 🛠 Стек
 
