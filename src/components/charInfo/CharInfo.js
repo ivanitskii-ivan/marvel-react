@@ -23,22 +23,32 @@ class CharInfo extends Component {
   apiService = new ApiService();
   controller = null;
 
+  componentDidMount(){
+    window.addEventListener('resize', this.updateBodyScroll)
+  }
+
   componentDidUpdate(prevProps) {
     if (this.props.charId !== prevProps.charId) {
       this.loadCharacter(this.props.charId);
     }
+     this.updateBodyScroll()
+  }
 
-  const isOpenModal = this.props.charId 
-    if(isOpenModal){
-      document.body.style.overflow = 'hidden'
-    }
-    else{
-      document.body.style.overflow =  ''
-    }
+  updateBodyScroll = ()=>{
+    const widthWindow = Math.floor(window.innerWidth);
+    const isOpenModal = this.props.charId;
+    
+      if (isOpenModal && widthWindow <= 768) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "";
+      }
   }
 
   componentWillUnmount() {
     if (this.controller) this.controller.abort();
+    window.removeEventListener('resize',this.updateBodyScroll)
+    document.body.style.overflow = "";
   }
 
   loadCharacter = async (id) => {
@@ -74,16 +84,16 @@ class CharInfo extends Component {
   };
 
   closeModal = (e) => {
-    const {loading} = this.state
-    if(loading){
-      return
+    const { loading } = this.state;
+    if (loading) {
+      return;
     }
     this.props.onClearCharId();
   };
 
   render() {
     const { loading, char, error } = this.state;
-    const isActive = char ? true : false
+    const isActive = char ? true : false;
     const skeleton = !loading && !error && !char ? <Skeleton /> : null;
     const errorMessage = error ? <Error /> : null;
     const spinner = loading ? <Spinner /> : null;
@@ -91,8 +101,13 @@ class CharInfo extends Component {
     // Если персонаж не выбран — можно скрыть крестик
     const showClose = !!this.props.charId;
     return (
-      <div className={isActive || loading ?"char__overlay active-modal":"char__overlay"} onClick={this.closeModal} >
-        <div className="char__info " onClick={(e)=>e.stopPropagation()}>
+      <div
+        className={
+          isActive || loading ? "char__overlay active-modal" : "char__overlay"
+        }
+        onClick={this.closeModal}
+      >
+        <div className="char__info " onClick={(e) => e.stopPropagation()}>
           {showClose && !loading && (
             <span className="close__modal" onClick={this.closeModal}>
               &#10006;

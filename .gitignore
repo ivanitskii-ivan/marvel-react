@@ -25,6 +25,6 @@ yarn-debug.log*
 yarn-error.log*
 
 .vercel
-.vscode 
+.vscodec 
 .idea
 Thumbs.db
