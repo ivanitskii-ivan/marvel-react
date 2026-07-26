@@ -113,7 +113,7 @@ export default class ApiService {
         'issues',
         {
           filter: `character:${id}`,
-          limit: 6,
+          limit: 8,
           offset: comicsOffset,
         },
         signal
