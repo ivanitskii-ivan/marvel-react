@@ -23,22 +23,33 @@ class CharInfo extends Component {
   apiService = new ApiService();
   controller = null;
 
+  componentDidMount(){
+    window.addEventListener('resize',this.updateScroll) 
+  }
+
   componentDidUpdate(prevProps) {
     if (this.props.charId !== prevProps.charId) {
       this.loadCharacter(this.props.charId);
     }
+    this.updateScroll()
+  }
 
-  const isOpenModal = this.props.charId 
-    if(isOpenModal){
+  componentWillUnmount() {
+    if (this.controller) this.controller.abort();
+    window.removeEventListener('resize',this.updateScroll)
+    document.body.style.overflow =  ''
+  }
+
+
+  updateScroll= ()=>{
+    const isOpenModal = this.props.charId 
+    const widthWindow = Math.floor(window.innerWidth)
+    if(isOpenModal && widthWindow < 768){
       document.body.style.overflow = 'hidden'
     }
     else{
       document.body.style.overflow =  ''
     }
-  }
-
-  componentWillUnmount() {
-    if (this.controller) this.controller.abort();
   }
 
   loadCharacter = async (id) => {
