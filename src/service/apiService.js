@@ -1,4 +1,4 @@
-// // apiService.js
+// // apiService.js версия для разработки 
 // export default class ApiService {
 //   constructor() {
 //     this.apiKey = process.env.REACT_APP_API_KEY;
@@ -78,7 +78,7 @@
 
 
 
-//apiService.js
+ // ApiService.js
 export default class ApiService {
   // Базовый URL для нашего прокси (тот же домен — same-origin, нет CORS)
   proxyBase = '/api/comicvine';
