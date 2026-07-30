@@ -44,7 +44,9 @@ class CharInfo extends Component {
   updateScroll= ()=>{
     const isOpenModal = this.props.charId 
     const widthWindow = Math.floor(window.innerWidth)
+    console.log (isOpenModal ,widthWindow)
     if(isOpenModal && widthWindow < 768){
+      console.log (isOpenModal ,widthWindow)
       document.body.style.overflow = 'hidden'
     }
     else{
