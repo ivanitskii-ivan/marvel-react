@@ -1,4 +1,4 @@
-// // apiService.js версия для разработки 
+// apiService.js версия для разработки 
 // export default class ApiService {
 //   constructor() {
 //     this.apiKey = process.env.REACT_APP_API_KEY;
